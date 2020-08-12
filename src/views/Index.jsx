@@ -22,7 +22,7 @@ const imageSrc = require("../static/images/icon_colorpick.png");
 class ColourLight extends Component {
   state = {
     left: "", //左偏移量
-    top: "", //右偏移量
+    top: "", //上偏移量
   };
   componentDidMount() {
     this.init();
