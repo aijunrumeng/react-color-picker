@@ -1,0 +1,35 @@
+.drap-wrap {
+  height: 300px;
+  width: 300px;
+  margin: 0 auto;
+  position: relative;
+  border-radius: 50%;
+  .handle-wrap {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    z-index: 101;
+    top: 0;
+    left: 0;
+    .handler {
+      position: absolute;
+      height: 50px;
+      width: 50px;
+      border-radius: 50%;
+      background: transparent;
+      border: 2px solid #000;
+    }
+    .dot {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+    }
+  }
+  #picker {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    border-radius: 50%;
+  }
+}
