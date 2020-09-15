@@ -25,13 +25,16 @@ class ColourLight extends Component {
     top: "", //上偏移量
   };
   componentDidMount() {
-    this.init();
+    const { lightcolor = "CEC9FF" } = this.props;
+    this.initDOMProperty();
+    this.drawColorImage(ctx, outerW, outerH, imageSrc, () => {
+      this.getPositionByRGB(lightcolor);
+    });
   }
   /**
    * @method: 色盘初始化
    */
-  init = () => {
-    const { lightcolor = "CEC9FF" } = this.props;
+  initDOMProperty = () => {
     canvas = document.getElementById("picker");
     ctx = canvas.getContext("2d");
     handleW = this.getDomProperty(".handler", "width");
@@ -43,11 +46,6 @@ class ColourLight extends Component {
     outerY = this.getDomProperty(".drap-wrap", "top");
     centerX = this.getDomProperty(".drap-wrap .dot", "left");
     centerY = this.getDomProperty(".drap-wrap .dot", "top");
-    this.drawColorImage(ctx, outerW, outerH, imageSrc);
-    setTimeout(() => {
-      this.getPositionByRGB(lightcolor);
-    }, 300);
-    this.getPositionByRGB(lightcolor);
   };
   /**
    * @method: touchmove事件 设置色彩
@@ -59,14 +57,37 @@ class ColourLight extends Component {
       { x: pageX, y: pageY },
       { x: centerX, y: centerY }
     );
-    if (curDistance >= outerRadius - handleW / 2) return;
-    const left = parseInt(pageX - outerX - handleW / 2);
-    const top = parseInt(pageY - outerY - handleH / 2);
+    let left = parseInt(pageX - outerX - handleW / 2);
+    let top = parseInt(pageY - outerY - handleH / 2);
+    if (curDistance >= outerRadius - handleW / 2) {
+      //当前滑动位置与色盘中心形成的角度
+      const angle = this.getAngle(centerX, centerY, pageX, pageY);
+      //当前滑动位置p1和色盘圆心所在位置p0连成的直线,穿过色盘圆上点的坐标p2
+      const curPosition = this.getLocation(
+        centerX,
+        centerY,
+        outerRadius,
+        angle
+      );
+      //p2与p0连成的直线,穿过滑块圆上的坐标p4
+      const handlePosition = {
+        x: (Math.cos((Math.PI / 180) * angle) * handleW) / 2,
+        y: (Math.sin((Math.PI / 180) * angle) * handleW) / 2,
+      };
+      left = curPosition.x - outerX - handleW / 2 - handlePosition.x;
+      top = curPosition.y - outerY - handleH / 2 + handlePosition.y;
+    }
+
     this.setState({ left, top });
-    const imageData = ctx.getImageData(left, top, 1, 1);
+    const imageData = ctx.getImageData(
+      left + handleW / 2,
+      top + handleW / 2,
+      1,
+      1
+    );
     const rgbArr = [...imageData.data].slice(0, 3);
     console.log(rgbArr, "rgbArr");
-    //...methods
+    //todo
   };
   /**
    * @method:绘制图像
@@ -75,20 +96,21 @@ class ColourLight extends Component {
    * @param {number} h 元素高度
    * @param {string} imgScr 图像地址
    */
-  drawColorImage = (ctx, w, h, imgScr) => {
+  drawColorImage(ctx, w, h, imgScr, cb) {
     const image = new Image();
     image.onload = function() {
       ctx.drawImage(image, 0, 0, w, h);
+      cb && cb();
     };
     image.src = imgScr;
-  };
+    cb && cb();
+  }
   /**
    * @method: 根据rgb颜色获取位置
    * @param {string} rgb 3个2位16进制拼接成的字符串  例: "ffffff"
    * @return {object}  { x: 1, y: 1 }
    */
   getPositionByRGB = (rgb) => {
-    console.log(rgb, "rgb");
     const R = parseInt(rgb.slice(0, 2), 16);
     const G = parseInt(rgb.slice(2, 4), 16);
     const B = parseInt(rgb.slice(4, 6), 16);
@@ -124,19 +146,60 @@ class ColourLight extends Component {
     return document.querySelector(selectors).getBoundingClientRect()[prop] || 0;
   };
   /**
-   * @method:获取两个坐标之间的距离
+   * @method:获取两点坐标直线距离
    * @param {object} location1 {x:1, y:1}
-   * @param {object} location2 {x:2, y:2}
-   * @return {number} number
+   * @param {object} location2 {x:1, y:1}
+   * @return:num
    */
-  getDistance = (location1, location2) => {
+  getDistance(location1, location2) {
     const dx = Math.abs(location1.x - location2.x);
     const dy = Math.abs(location1.y - location2.y);
     return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
-  };
+  }
+  /**
+   * @method:获取两个坐标之间的角度
+   * @param {number} px 坐标1 x轴
+   * @param {number} py 坐标1 y轴
+   * @param {number} mx 坐标2 x轴
+   * @param {number} my 坐标2 y轴
+   * @return {number} number 角度 0-360
+   */
+  getAngle(px, py, mx, my) {
+    const x = Math.abs(px - mx);
+    const y = Math.abs(py - my);
+    const tan = y / x;
+    const radina = Math.atan(tan); //用反三角函数求弧度
+    let angle = Math.floor(180 / (Math.PI / radina)); //将弧度转换成角度d
+    if (mx > px && my > py) {
+      angle = 360 - angle;
+    }
+    if (mx > px && my <= py) {
+      angle = angle;
+    }
+    if (mx < px && my >= py) {
+      angle = 180 + angle;
+    }
+    if (mx < px && my < py) {
+      angle = 180 - angle;
+    }
+    return angle;
+  }
+  /**
+   * @method:已知圆心、半径、角度, 求圆上该点坐标
+   * @param {number} x0 圆心x轴距离
+   * @param {number} y0 圆心y轴距离
+   * @param {number} r 圆的半径
+   * @param {number} angle 角度
+   * @return {Object} { x:1, y:1 }
+   */
+  getLocation(x0, y0, r, angle) {
+    return {
+      x: x0 + r * Math.cos((angle * Math.PI) / 180),
+      y: y0 - r * Math.sin((angle * Math.PI) / 180),
+    };
+  }
   render() {
     const { left, top } = this.state;
-    console.log(left, top, "render");
     return (
       <div className="drap-wrap" onTouchMove={this.handleMouseMove}>
         <canvas id="picker" width={outerW} height={outerH}></canvas>
