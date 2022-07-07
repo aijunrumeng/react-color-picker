@@ -19,7 +19,7 @@ let ctx = null;
 //canvas  背景图
 const imageSrc = require('./color.png');
 
-class ColourLight extends Component {
+class Picker extends Component {
   state = {
     left: '', //左偏移量
     top: '', //上偏移量
@@ -214,4 +214,4 @@ class ColourLight extends Component {
     );
   }
 }
-export default ColourLight;
+export default Picker;

@@ -6,7 +6,7 @@ const devConfig = {
   mode: 'development',
   devtool: 'eval-cheap-module-source-map',
   entry: {
-    index: './src/index.js',
+    index: './src/index.tsx',
   },
   output: {
     path: path.resolve(__dirname, '../build'),
