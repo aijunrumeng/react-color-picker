@@ -100,7 +100,6 @@ class ColourLight extends Component {
     const image = new Image();
     image.onload = function () {
       ctx.drawImage(image, 0, 0, w, h);
-      cb && cb();
     };
     image.src = imgScr;
     cb && cb();

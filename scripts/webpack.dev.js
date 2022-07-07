@@ -69,7 +69,7 @@ const devConfig = {
       },
 
       {
-        test: /\.(jsx?|es6)$/,
+        test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: [
           {
@@ -103,6 +103,7 @@ const devConfig = {
           },
         ],
       },
+      { test: /\.(ts|tsx)$/, loader: 'ts-loader' },
       {
         test: /\.(jpg|png|gif|ico)$/,
         use: {
