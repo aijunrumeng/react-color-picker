@@ -1,8 +1,10 @@
-import React, { Component } from 'react';
+import { useEffect, useState } from 'react';
 
 import './index.less';
 
-//色盘
+import imageSrc from './color.png';
+
+// 色盘
 let outerX = 0; //圆相对窗口x
 let outerY = 0; //圆相对窗口y
 let outerW = 0; //圆的宽
@@ -12,63 +14,63 @@ let centerY = 0; //圆点相对窗口y
 let handleW = 0; //滑块宽度
 let handleH = 0; //滑块高度
 let outerRadius = 0; //圆半径
-//画布
-let canvas = null;
-let ctx = null;
 
-//canvas  背景图
-const imageSrc = require('./color.png');
+let canvas: HTMLCanvasElement;
+let ctx: CanvasRenderingContext2D;
 
-class Picker extends Component {
-  state = {
-    left: '', //左偏移量
-    top: '', //上偏移量
-  };
-  componentDidMount() {
-    const { lightcolor = 'CEC9FF' } = this.props;
-    this.initDOMProperty();
-    this.drawColorImage(ctx, outerW, outerH, imageSrc, () => {
-      this.getPositionByRGB(lightcolor);
+type IProps = {
+  initColor?: string;
+};
+
+export default function Picker(props: IProps) {
+  const [left, setLeft] = useState<string | number>(0);
+  const [top, setTop] = useState<string | number>(0);
+
+  const { initColor = 'CEC9FF' } = props;
+
+  useEffect(() => {
+    initDOMProperty();
+    drawColorImage(ctx, outerW, outerH, imageSrc, () => {
+      getPositionByRGB(initColor);
     });
-  }
+  }, []);
+
   /**
    * @method: 色盘初始化
    */
-  initDOMProperty = () => {
-    canvas = document.getElementById('picker');
-    ctx = canvas.getContext('2d');
-    handleW = this.getDomProperty('.handler', 'width');
-    handleH = this.getDomProperty('.handler', 'height');
-    outerRadius = this.getDomProperty('.drap-wrap', 'width') / 2;
-    outerW = this.getDomProperty('.drap-wrap', 'width');
-    outerH = this.getDomProperty('.drap-wrap', 'height');
-    outerX = this.getDomProperty('.drap-wrap', 'left');
-    outerY = this.getDomProperty('.drap-wrap', 'top');
-    centerX = this.getDomProperty('.drap-wrap .dot', 'left');
-    centerY = this.getDomProperty('.drap-wrap .dot', 'top');
+  const initDOMProperty = () => {
+    canvas = document.getElementById('picker') as HTMLCanvasElement;
+    ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+    handleW = getDomProperty('.handler', 'width');
+    handleH = getDomProperty('.handler', 'height');
+    outerRadius = getDomProperty('.drap-wrap', 'width') / 2;
+    outerW = getDomProperty('.drap-wrap', 'width');
+    outerH = getDomProperty('.drap-wrap', 'height');
+    outerX = getDomProperty('.drap-wrap', 'left');
+    outerY = getDomProperty('.drap-wrap', 'top');
+    centerX = getDomProperty('.drap-wrap .dot', 'left');
+    centerY = getDomProperty('.drap-wrap .dot', 'top');
   };
   /**
    * @method: touchmove事件 设置色彩
    * @param {Event} e
    */
-  handleColor = (e) => {
+  const handleColor = (e: any) => {
     const { pageX, pageY } = e.changedTouches[0];
-    const curDistance = this.getDistance(
+
+    const curDistance = getDistance(
       { x: pageX, y: pageY },
       { x: centerX, y: centerY }
     );
-    let left = parseInt(pageX - outerX - handleW / 2);
-    let top = parseInt(pageY - outerY - handleH / 2);
+
+    let left = Math.ceil(pageX - outerX - handleW / 2);
+    let top = Math.ceil(pageY - outerY - handleH / 2);
+
     if (curDistance >= outerRadius - handleW / 2) {
       //当前滑动位置与色盘中心形成的角度
-      const angle = this.getAngle(centerX, centerY, pageX, pageY);
+      const angle = getAngle(centerX, centerY, pageX, pageY);
       //当前滑动位置p1和色盘圆心所在位置p0连成的直线,穿过色盘圆上点的坐标p2
-      const curPosition = this.getLocation(
-        centerX,
-        centerY,
-        outerRadius,
-        angle
-      );
+      const curPosition = getLocation(centerX, centerY, outerRadius, angle);
       //p2与p0连成的直线,穿过滑块圆上的坐标p4
       const handlePosition = {
         x: (Math.cos((Math.PI / 180) * angle) * handleW) / 2,
@@ -78,7 +80,8 @@ class Picker extends Component {
       top = curPosition.y - outerY - handleH / 2 + handlePosition.y;
     }
 
-    this.setState({ left, top });
+    setLeft(left);
+    setTop(top);
     const imageData = ctx.getImageData(
       left + handleW / 2,
       top + handleW / 2,
@@ -96,25 +99,32 @@ class Picker extends Component {
    * @param {number} h 元素高度
    * @param {string} imgScr 图像地址
    */
-  drawColorImage(ctx, w, h, imgScr, cb) {
+  const drawColorImage = (
+    ctx: CanvasRenderingContext2D,
+    w: number,
+    h: number,
+    imgScr: string,
+    cb: () => void
+  ) => {
     const image = new Image();
     image.onload = function () {
       ctx.drawImage(image, 0, 0, w, h);
     };
     image.src = imgScr;
     cb && cb();
-  }
+  };
   /**
    * @method: 根据rgb颜色获取位置
    * @param {string} rgb 3个2位16进制拼接成的字符串  例: "ffffff"
-   * @return {object}  { x: 1, y: 1 }
    */
-  getPositionByRGB = (rgb) => {
+  const getPositionByRGB = (rgb: string) => {
     const R = parseInt(rgb.slice(0, 2), 16);
     const G = parseInt(rgb.slice(2, 4), 16);
     const B = parseInt(rgb.slice(4, 6), 16);
+
     const pixs = ctx.getImageData(0, 0, outerW, outerH).data;
     let positions = [];
+
     if (rgb.toLowerCase() !== 'ffffff') {
       for (let i = 0; i < pixs.length; i += 4) {
         const r = pixs[i];
@@ -132,8 +142,9 @@ class Picker extends Component {
     if (!positions.length) {
       positions.push({ left: '50%', top: '50%' });
     }
-    const { left, top } = positions[0];
-    this.setState({ left, top });
+    const [{ left, top }] = positions;
+    setLeft(left);
+    setTop(top);
   };
   /**
    * @method:获取元素属性
@@ -141,7 +152,7 @@ class Picker extends Component {
    * @param {string} prop 元素属性 height、width、top、left..  etc.
    * @return {number} number
    */
-  getDomProperty = (selectors, prop) => {
+  const getDomProperty = (selectors: any, prop: string) => {
     return document.querySelector(selectors).getBoundingClientRect()[prop] || 0;
   };
   /**
@@ -150,11 +161,11 @@ class Picker extends Component {
    * @param {object} location2 {x:1, y:1}
    * @return:num
    */
-  getDistance(location1, location2) {
+  const getDistance = (location1: any, location2: any) => {
     const dx = Math.abs(location1.x - location2.x);
     const dy = Math.abs(location1.y - location2.y);
     return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
-  }
+  };
   /**
    * @method:获取两个坐标之间的角度
    * @param {number} px 坐标1 x轴
@@ -163,7 +174,7 @@ class Picker extends Component {
    * @param {number} my 坐标2 y轴
    * @return {number} number 角度 0-360
    */
-  getAngle(px, py, mx, my) {
+  const getAngle = (px: number, py: number, mx: number, my: number) => {
     const x = Math.abs(px - mx);
     const y = Math.abs(py - my);
     const tan = y / x;
@@ -182,7 +193,7 @@ class Picker extends Component {
       angle = 180 - angle;
     }
     return angle;
-  }
+  };
   /**
    * @method:已知圆心、半径、角度, 求圆上该点坐标
    * @param {number} x0 圆心x轴距离
@@ -191,27 +202,24 @@ class Picker extends Component {
    * @param {number} angle 角度
    * @return {Object} { x:1, y:1 }
    */
-  getLocation(x0, y0, r, angle) {
+  const getLocation = (x0: number, y0: number, r: number, angle: number) => {
     return {
       x: x0 + r * Math.cos((angle * Math.PI) / 180),
       y: y0 - r * Math.sin((angle * Math.PI) / 180),
     };
-  }
-  render() {
-    const { left, top } = this.state;
-    return (
-      <div className='drap-wrap' onTouchMove={this.handleMouseMove}>
-        <canvas id='picker' width={outerW} height={outerH}></canvas>
-        <div className='handle-wrap'>
-          <div
-            className='handler'
-            style={{ left, top }}
-            onTouchMove={this.handleColor}
-          ></div>
-          <div className='dot'></div>
-        </div>
+  };
+
+  return (
+    <div className='drap-wrap'>
+      <canvas id='picker' width={outerW} height={outerH}></canvas>
+      <div className='handle-wrap'>
+        <div
+          className='handler'
+          style={{ left, top }}
+          onTouchMove={handleColor}
+        ></div>
+        <div className='dot'></div>
       </div>
-    );
-  }
+    </div>
+  );
 }
-export default Picker;
