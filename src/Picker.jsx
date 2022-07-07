@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import "./index.less";
+import './index.less';
 
 //色盘
 let outerX = 0; //圆相对窗口x
@@ -17,15 +17,15 @@ let canvas = null;
 let ctx = null;
 
 //canvas  背景图
-const imageSrc = require("../static/images/icon_colorpick.png");
+const imageSrc = require('./color.png');
 
 class ColourLight extends Component {
   state = {
-    left: "", //左偏移量
-    top: "", //上偏移量
+    left: '', //左偏移量
+    top: '', //上偏移量
   };
   componentDidMount() {
-    const { lightcolor = "CEC9FF" } = this.props;
+    const { lightcolor = 'CEC9FF' } = this.props;
     this.initDOMProperty();
     this.drawColorImage(ctx, outerW, outerH, imageSrc, () => {
       this.getPositionByRGB(lightcolor);
@@ -35,17 +35,17 @@ class ColourLight extends Component {
    * @method: 色盘初始化
    */
   initDOMProperty = () => {
-    canvas = document.getElementById("picker");
-    ctx = canvas.getContext("2d");
-    handleW = this.getDomProperty(".handler", "width");
-    handleH = this.getDomProperty(".handler", "height");
-    outerRadius = this.getDomProperty(".drap-wrap", "width") / 2;
-    outerW = this.getDomProperty(".drap-wrap", "width");
-    outerH = this.getDomProperty(".drap-wrap", "height");
-    outerX = this.getDomProperty(".drap-wrap", "left");
-    outerY = this.getDomProperty(".drap-wrap", "top");
-    centerX = this.getDomProperty(".drap-wrap .dot", "left");
-    centerY = this.getDomProperty(".drap-wrap .dot", "top");
+    canvas = document.getElementById('picker');
+    ctx = canvas.getContext('2d');
+    handleW = this.getDomProperty('.handler', 'width');
+    handleH = this.getDomProperty('.handler', 'height');
+    outerRadius = this.getDomProperty('.drap-wrap', 'width') / 2;
+    outerW = this.getDomProperty('.drap-wrap', 'width');
+    outerH = this.getDomProperty('.drap-wrap', 'height');
+    outerX = this.getDomProperty('.drap-wrap', 'left');
+    outerY = this.getDomProperty('.drap-wrap', 'top');
+    centerX = this.getDomProperty('.drap-wrap .dot', 'left');
+    centerY = this.getDomProperty('.drap-wrap .dot', 'top');
   };
   /**
    * @method: touchmove事件 设置色彩
@@ -86,7 +86,7 @@ class ColourLight extends Component {
       1
     );
     const rgbArr = [...imageData.data].slice(0, 3);
-    console.log(rgbArr, "rgbArr");
+    console.log(rgbArr, 'rgbArr');
     //todo
   };
   /**
@@ -98,7 +98,7 @@ class ColourLight extends Component {
    */
   drawColorImage(ctx, w, h, imgScr, cb) {
     const image = new Image();
-    image.onload = function() {
+    image.onload = function () {
       ctx.drawImage(image, 0, 0, w, h);
       cb && cb();
     };
@@ -116,7 +116,7 @@ class ColourLight extends Component {
     const B = parseInt(rgb.slice(4, 6), 16);
     const pixs = ctx.getImageData(0, 0, outerW, outerH).data;
     let positions = [];
-    if (rgb.toLowerCase() !== "ffffff") {
+    if (rgb.toLowerCase() !== 'ffffff') {
       for (let i = 0; i < pixs.length; i += 4) {
         const r = pixs[i];
         const g = pixs[i + 1];
@@ -128,10 +128,10 @@ class ColourLight extends Component {
         }
       }
     } else {
-      positions.push({ left: "50%", top: "50%" });
+      positions.push({ left: '50%', top: '50%' });
     }
     if (!positions.length) {
-      positions.push({ left: "50%", top: "50%" });
+      positions.push({ left: '50%', top: '50%' });
     }
     const { left, top } = positions[0];
     this.setState({ left, top });
@@ -201,15 +201,15 @@ class ColourLight extends Component {
   render() {
     const { left, top } = this.state;
     return (
-      <div className="drap-wrap" onTouchMove={this.handleMouseMove}>
-        <canvas id="picker" width={outerW} height={outerH}></canvas>
-        <div className="handle-wrap">
+      <div className='drap-wrap' onTouchMove={this.handleMouseMove}>
+        <canvas id='picker' width={outerW} height={outerH}></canvas>
+        <div className='handle-wrap'>
           <div
-            className="handler"
+            className='handler'
             style={{ left, top }}
             onTouchMove={this.handleColor}
           ></div>
-          <div className="dot"></div>
+          <div className='dot'></div>
         </div>
       </div>
     );
