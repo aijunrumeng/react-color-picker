@@ -1,14 +1,24 @@
 {
   "name": "react-mobile-circle-color-picker",
   "version": "0.0.1",
+  "description": "mobile color picker",
+  "keywords": [
+    "color-picker",
+    "react",
+    "react-dom",
+    "typescript"
+  ],
   "author": "lc",
-  "license": "ISC",
+  "license": "MIT",
   "main": "lib/index.js",
   "types": "lib/Picker.d.ts",
   "sideEffects": [
     "*.less",
     "*.css"
   ],
+  "engines": {
+    "node": ">=16"
+  },
   "scripts": {
     "start": "webpack-dev-server --config ./scripts/webpack.dev.js",
     "build-lib": "webpack --config ./scripts/webpack.lib.js",
@@ -19,7 +29,8 @@
     "postcss-px2rem": "^0.3.0",
     "process": "^0.11.10",
     "react": "^17.0.0",
-    "react-dom": "^17.0.0"
+    "react-dom": "^17.0.0",
+    "react-mobile-circle-color-picker": "^0.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.4.0",
@@ -29,11 +40,14 @@
     "@babel/plugin-transform-runtime": "7.4.4",
     "@babel/preset-env": "^7.4.2",
     "@babel/preset-react": "^7.0.0",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
     "autoprefixer": "^9.5.0",
     "babel-loader": "^8.0.5",
     "babel-plugin-import": "^1.12.0",
     "babel-runtime": "6.26.0",
     "clean-webpack-plugin": "^4.0.0",
+    "copy-webpack-plugin": "11.0.0",
     "css-loader": "^6.7.1",
     "file-loader": "^3.0.1",
     "html-webpack-plugin": "^5.5.0",
@@ -45,17 +59,14 @@
     "postcss-loader": "^3.0.0",
     "postcss-pxtorem": "4.0.1",
     "progress-bar-webpack-plugin": "^1.12.1",
-    "copy-webpack-plugin": "11.0.0",
     "rimraf": "2.6.2",
     "style-loader": "^3.3.1",
+    "ts-loader": "^9.3.1",
+    "typescript": "^4.7.4",
     "url-loader": "^4.1.1",
     "webpack": "5.66.0",
     "webpack-cli": "^4.9.1",
     "webpack-dev-server": "^4.7.3",
-    "webpack-merge": "^5.8.0",
-    "ts-loader": "^9.3.1",
-    "typescript": "^4.7.4",
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.0"
+    "webpack-merge": "^5.8.0"
   }
 }

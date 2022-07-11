@@ -1,4 +1,4 @@
-import ColorPicker from 'color-picker';
+import ColorPicker from 'react-mobile-circle-color-picker';
 
 export default function Test() {
   return (
