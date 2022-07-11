@@ -1,8 +1,15 @@
 import { useEffect, useState } from 'react';
+import React from 'react';
+
+// import ColorPicker from 'color-picker';
 
 import './index.less';
 
 import imageSrc from './color.png';
+
+type ColorPickerProps = {
+  initColor?: string;
+};
 
 // 色盘
 let outerX = 0; //圆相对窗口x
@@ -18,11 +25,7 @@ let outerRadius = 0; //圆半径
 let canvas: HTMLCanvasElement;
 let ctx: CanvasRenderingContext2D;
 
-type IProps = {
-  initColor?: string;
-};
-
-export default function Picker(props: IProps) {
+export default function Picker(props: ColorPickerProps) {
   const [left, setLeft] = useState<string | number>(0);
   const [top, setTop] = useState<string | number>(0);
 
@@ -220,6 +223,8 @@ export default function Picker(props: IProps) {
         ></div>
         <div className='dot'></div>
       </div>
+      {/* @ts-ignore */}
+      <ColorPicker initColor='ccc' />
     </div>
   );
 }

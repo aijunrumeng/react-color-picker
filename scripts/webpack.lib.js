@@ -1,5 +1,6 @@
 const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -9,6 +10,7 @@ module.exports = {
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname, '../lib'),
+    libraryExport: 'default',
     library: 'ColorPicker',
     libraryTarget: 'umd',
   },
@@ -107,5 +109,25 @@ module.exports = {
       },
     ],
   },
-  plugins: [new CleanWebpackPlugin()],
+  externals: {
+    react: {
+      root: 'React',
+      commonjs2: 'react',
+      commonjs: 'react',
+      amd: 'react',
+    },
+    'react-dom': {
+      root: 'ReactDOM',
+      commonjs2: 'react-dom',
+      commonjs: 'react-dom',
+      amd: 'react-dom',
+    },
+  },
+
+  plugins: [
+    new CleanWebpackPlugin(),
+    new CopyPlugin({
+      patterns: [{ from: 'package.json', to: 'package.json' }],
+    }),
+  ],
 };
