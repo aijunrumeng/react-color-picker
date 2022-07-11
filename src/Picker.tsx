@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 // import ColorPicker from 'color-picker';
 
 import './index.less';
 
 import imageSrc from './color.png';
+import type { CustomProps } from 'types';
 
 type ColorPickerProps = {
   initColor?: string;
@@ -25,7 +25,7 @@ let outerRadius = 0; //圆半径
 let canvas: HTMLCanvasElement;
 let ctx: CanvasRenderingContext2D;
 
-export default function Picker(props: ColorPickerProps) {
+export default function Picker(props: CustomProps) {
   const [left, setLeft] = useState<string | number>(0);
   const [top, setTop] = useState<string | number>(0);
 

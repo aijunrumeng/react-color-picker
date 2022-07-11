@@ -1,3 +1,4 @@
-declare type ColorPickerProps = {
+export declare type CustomProps = {
+  name?: string;
   initColor?: string;
 };

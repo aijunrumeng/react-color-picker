@@ -97,7 +97,13 @@ module.exports = {
           },
         ],
       },
-      { test: /\.(ts|tsx)$/, loader: 'ts-loader' },
+      {
+        test: /\.tsx?$/,
+        loader: 'ts-loader',
+        options: {
+          configFile: path.resolve(__dirname, '../tsconfig.json'),
+        },
+      },
       {
         test: /\.(jpg|png|gif|ico)$/,
         use: {

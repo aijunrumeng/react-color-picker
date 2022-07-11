@@ -1,12 +1,11 @@
 {
   "compilerOptions": {
-    "rootDir": "./",
     "outDir": "lib",
     "module": "esnext",
     "lib": ["esnext", "dom"],
     "target": "esnext",
     "declaration": true,
-    "declarationDir": "lib",
+    "declarationDir": "lib/types/",
     "baseUrl": "./",
     "jsx": "react-jsx",
     "resolveJsonModule": true,
@@ -23,5 +22,5 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["src/**/*", "types", "*.d.ts"]
+  "include": ["src/**/*", "types/*.d.ts", "*.d.ts"]
 }
