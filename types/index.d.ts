@@ -1,4 +1,4 @@
-export declare type CustomProps = {
+type CustomProps = {
   name?: string;
   initColor?: string;
 };

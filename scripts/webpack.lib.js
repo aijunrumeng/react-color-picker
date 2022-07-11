@@ -3,7 +3,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-  mode: 'development',
+  mode: 'production',
   entry: {
     index: './src/Picker.tsx',
   },
@@ -129,11 +129,22 @@ module.exports = {
       amd: 'react-dom',
     },
   },
+  resolve: {
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
+  },
 
   plugins: [
     new CleanWebpackPlugin(),
     new CopyPlugin({
-      patterns: [{ from: 'package.json', to: 'package.json' }],
+      patterns: [
+        { from: 'package.json', to: 'package.json' },
+        {
+          from: 'types/index.d.ts',
+          to: 'types/index.d.ts',
+          force: true,
+          priority: 5,
+        },
+      ],
     }),
   ],
 };

@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-// import ColorPicker from 'color-picker';
-
 import './index.less';
 
 import imageSrc from './color.png';
-import type { CustomProps } from 'types';
 
 type ColorPickerProps = {
   initColor?: string;
@@ -213,18 +210,18 @@ export default function Picker(props: CustomProps) {
   };
 
   return (
-    <div className='drap-wrap'>
-      <canvas id='picker' width={outerW} height={outerH}></canvas>
-      <div className='handle-wrap'>
-        <div
-          className='handler'
-          style={{ left, top }}
-          onTouchMove={handleColor}
-        ></div>
-        <div className='dot'></div>
+    <>
+      <div className='drap-wrap'>
+        <canvas id='picker' width={outerW} height={outerH}></canvas>
+        <div className='handle-wrap'>
+          <div
+            className='handler'
+            style={{ left, top }}
+            onTouchMove={handleColor}
+          ></div>
+          <div className='dot'></div>
+        </div>
       </div>
-      {/* @ts-ignore */}
-      <ColorPicker initColor='ccc' />
-    </div>
+    </>
   );
 }

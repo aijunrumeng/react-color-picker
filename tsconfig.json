@@ -5,7 +5,7 @@
     "lib": ["esnext", "dom"],
     "target": "esnext",
     "declaration": true,
-    "declarationDir": "lib/types/",
+    "declarationDir": "lib/",
     "baseUrl": "./",
     "jsx": "react-jsx",
     "resolveJsonModule": true,
