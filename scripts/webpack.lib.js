@@ -2,6 +2,7 @@ const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
+const CopyFilePlugin = require('./webpack.copy.plugin.js');
 
 module.exports = {
   mode: 'production',
@@ -140,13 +141,14 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         { from: 'package.json', to: 'package.json' },
-        {
-          from: 'types/index.d.ts',
-          to: 'types/index.d.ts',
-          force: true,
-          priority: 5,
-        },
+        // {
+        //   from: 'types/index.d.ts',
+        //   to: 'index.d.ts',
+        //   force: true,
+        //   priority: 5,
+        // },
       ],
     }),
+    new CopyFilePlugin(),
   ],
 };

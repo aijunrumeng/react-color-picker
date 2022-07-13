@@ -30,6 +30,7 @@
     "del": "rimraf node_modules"
   },
   "dependencies": {
+    "fs-extra": "^10.1.0",
     "postcss-plugin-px2rem": "^0.8.1",
     "postcss-px2rem": "^0.3.0",
     "process": "^0.11.10",
