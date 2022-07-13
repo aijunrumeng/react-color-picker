@@ -7,30 +7,31 @@ class CopyFilePlugin {
   }
 
   apply(compiler) {
-    compiler.hooks.emit.tap('CopyFilePlugin', (compilation, callback) => {
+    compiler.hooks.emit.tapAsync('CopyFilePlugin', (compilation, callback) => {
       // console.log(compilation, 'compilation');
       this.copy();
-      // callback();
+      callback();
     });
   }
 
   copy() {
-    const sourceDir = path.join(__dirname, '/../lib');
+    const sourceDir = path.join(__dirname + '/../types');
+    const distDir = path.join(__dirname + '/../lib');
 
     fs.readdir(sourceDir, async (err, files) => {
       if (err) throw new Error(err);
 
-      const dist = path.join(__dirname + `/../lib/index.d.ts`);
+      const distFile = `${distDir}/Picker.d.ts`;
 
       for (const file of files) {
+        console.log(file, 'file');
         if (!file.includes('.d.ts')) return;
-        if (file.includes('index.d.ts')) return;
 
         const content = await fs.readFile(`${sourceDir}/${file}`, 'utf8');
 
         try {
-          await fs.appendFile(dist, content);
-          fs.remove(`${sourceDir}/${file}`);
+          await fs.appendFile(distFile, content);
+          fs.move(`${distDir}/Picker.d.ts`, `${distDir}/index.d.ts`);
         } catch (error) {
           console.log(error);
         }

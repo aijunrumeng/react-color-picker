@@ -12,11 +12,10 @@
   "author": "lc",
   "license": "MIT",
   "main": "lib/index.js",
-  "types": "lib/Picker.d.ts",
+  "types": "lib/index.d.ts",
   "files": [
     "lib/index.js",
-    "lib/index.d.ts",
-    "lib/Picker.d.ts"
+    "lib/index.d.ts"
   ],
   "sideEffects": [
     "*.less",
@@ -36,6 +35,7 @@
     "fs-extra": "^10.1.0",
     "postcss-plugin-px2rem": "^0.8.1",
     "postcss-px2rem": "^0.3.0",
+    "prettier": "^2.7.1",
     "process": "^0.11.10",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
