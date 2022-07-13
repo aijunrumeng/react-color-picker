@@ -38,7 +38,7 @@
     "process": "^0.11.10",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
-    "react-mobile-circle-color-picker": "^0.0.1"
+    "react-mobile-circle-color-picker": "^0.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.4.0",

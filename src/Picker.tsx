@@ -1,12 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import './index.less';
 
 import imageSrc from './color.png';
-
-type ColorPickerProps = {
-  initColor?: string;
-};
 
 // 色盘
 let outerX = 0; //圆相对窗口x
@@ -26,7 +22,7 @@ export default function Picker(props: CustomProps) {
   const [left, setLeft] = useState<string | number>(0);
   const [top, setTop] = useState<string | number>(0);
 
-  const { initColor = 'CEC9FF' } = props;
+  const { initColor = 'CEC9FF', onTouchMove, onTouchEnd } = props;
 
   useEffect(() => {
     initDOMProperty();
@@ -55,7 +51,7 @@ export default function Picker(props: CustomProps) {
    * @method: touchmove事件 设置色彩
    * @param {Event} e
    */
-  const handleColor = (e: any) => {
+  const handleTouchMove = (e: any) => {
     const { pageX, pageY } = e.changedTouches[0];
 
     const curDistance = getDistance(
@@ -67,11 +63,11 @@ export default function Picker(props: CustomProps) {
     let top = Math.ceil(pageY - outerY - handleH / 2);
 
     if (curDistance >= outerRadius - handleW / 2) {
-      //当前滑动位置与色盘中心形成的角度
+      // 当前滑动位置与色盘中心形成的角度
       const angle = getAngle(centerX, centerY, pageX, pageY);
-      //当前滑动位置p1和色盘圆心所在位置p0连成的直线,穿过色盘圆上点的坐标p2
+      // 当前滑动位置p1和色盘圆心所在位置p0连成的直线,穿过色盘圆上点的坐标p2
       const curPosition = getLocation(centerX, centerY, outerRadius, angle);
-      //p2与p0连成的直线,穿过滑块圆上的坐标p4
+      // p2与p0连成的直线,穿过滑块圆上的坐标p4
       const handlePosition = {
         x: (Math.cos((Math.PI / 180) * angle) * handleW) / 2,
         y: (Math.sin((Math.PI / 180) * angle) * handleW) / 2,
@@ -89,8 +85,7 @@ export default function Picker(props: CustomProps) {
       1
     );
     const rgbArr = [...imageData.data].slice(0, 3);
-    console.log(rgbArr, 'rgbArr');
-    //todo
+    onTouchMove?.(rgbArr);
   };
   /**
    * @method:绘制图像
@@ -217,7 +212,7 @@ export default function Picker(props: CustomProps) {
           <div
             className='handler'
             style={{ left, top }}
-            onTouchMove={handleColor}
+            onTouchMove={handleTouchMove}
           ></div>
           <div className='dot'></div>
         </div>

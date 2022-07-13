@@ -1,6 +1,5 @@
 type CustomProps = {
-  name?: string;
   initColor?: string;
-  age?: number;
-  test?: string;
+  onTouchMove?: (color: number[]) => void;
+  onTouchEnd?: (color: number[]) => void;
 };

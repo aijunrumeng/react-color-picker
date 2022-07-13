@@ -3647,6 +3647,18 @@ react-mobile-circle-color-picker@^0.0.1:
     react "^17.0.0"
     react-dom "^17.0.0"
 
+react-mobile-circle-color-picker@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/react-mobile-circle-color-picker/-/react-mobile-circle-color-picker-0.0.2.tgz#1c0e93bc18a53cfa6a4304f31be1eccd5441c764"
+  dependencies:
+    fs-extra "^10.1.0"
+    postcss-plugin-px2rem "^0.8.1"
+    postcss-px2rem "^0.3.0"
+    process "^0.11.10"
+    react "^17.0.0"
+    react-dom "^17.0.0"
+    react-mobile-circle-color-picker "^0.0.1"
+
 react@^17.0.0:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react/-/react-17.0.2.tgz#d0b5cc516d29eb3eee383f75b62864cfb6800037"
