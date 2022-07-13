@@ -4,7 +4,7 @@ export default function Test() {
   return (
     <div className='test'>
       <ColorPicker
-        onTouchMove={(rgb) => {
+        onTouchEnd={(rgb) => {
           console.log(rgb, 'rgb');
         }}
       />

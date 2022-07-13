@@ -1,3 +1,5 @@
+type RGB = [number, number, number];
+
 type CustomProps = {
   initColor?: string;
   onTouchMove?: (color: number[]) => void;

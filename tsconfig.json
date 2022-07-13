@@ -22,5 +22,5 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["src/**/*", "types/*.d.ts", "*.d.ts"]
+  "include": ["src/Picker.tsx", "types/*.d.ts", "*.d.ts"]
 }

@@ -21,6 +21,7 @@ let ctx: CanvasRenderingContext2D;
 export default function Picker(props: CustomProps) {
   const [left, setLeft] = useState<string | number>(0);
   const [top, setTop] = useState<string | number>(0);
+  const [rgbArr, setRgbArr] = useState<RGB>([1, 1, 1]);
 
   const { initColor = 'CEC9FF', onTouchMove, onTouchEnd } = props;
 
@@ -84,7 +85,8 @@ export default function Picker(props: CustomProps) {
       1,
       1
     );
-    const rgbArr = [...imageData.data].slice(0, 3);
+    const rgbArr = [...imageData.data].slice(0, 3) as RGB;
+    setRgbArr(rgbArr);
     onTouchMove?.(rgbArr);
   };
   /**
@@ -213,6 +215,9 @@ export default function Picker(props: CustomProps) {
             className='handler'
             style={{ left, top }}
             onTouchMove={handleTouchMove}
+            onTouchEnd={() => {
+              onTouchEnd?.(rgbArr);
+            }}
           ></div>
           <div className='dot'></div>
         </div>
