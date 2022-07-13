@@ -15,15 +15,22 @@ class CopyFilePlugin {
   }
 
   copy() {
-    const sourceDir = path.join(__dirname, '/../types');
+    const sourceDir = path.join(__dirname, '/../lib');
 
     fs.readdir(sourceDir, async (err, files) => {
       if (err) throw new Error(err);
 
+      const dist = path.join(__dirname + `/../lib/index.d.ts`);
+
       for (const file of files) {
-        const disrDir = path.join(__dirname + `/../lib/${file}`);
+        if (!file.includes('.d.ts')) return;
+        if (file.includes('index.d.ts')) return;
+
+        const content = await fs.readFile(`${sourceDir}/${file}`, 'utf8');
+
         try {
-          await fs.copy(`${sourceDir}/${file}`, disrDir);
+          await fs.appendFile(dist, content);
+          fs.remove(`${sourceDir}/${file}`);
         } catch (error) {
           console.log(error);
         }

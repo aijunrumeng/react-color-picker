@@ -140,13 +140,12 @@ module.exports = {
     new ProgressBarPlugin(),
     new CopyPlugin({
       patterns: [
-        { from: 'package.json', to: 'package.json' },
-        // {
-        //   from: 'types/index.d.ts',
-        //   to: 'index.d.ts',
-        //   force: true,
-        //   priority: 5,
-        // },
+        {
+          from: 'types/index.d.ts',
+          to: 'index.d.ts',
+          force: true,
+          priority: 5,
+        },
       ],
     }),
     new CopyFilePlugin(),
