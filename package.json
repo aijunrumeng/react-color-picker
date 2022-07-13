@@ -11,6 +11,10 @@
   "author": "lc",
   "license": "MIT",
   "main": "lib/index.js",
+  "files": [
+    "lib",
+    "types"
+  ],
   "types": "lib/Picker.d.ts",
   "sideEffects": [
     "*.less",
