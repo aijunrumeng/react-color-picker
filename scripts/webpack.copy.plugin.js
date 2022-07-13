@@ -1,4 +1,5 @@
 const fs = require('fs-extra');
+const path = require('path');
 
 class CopyFilePlugin {
   constructor(options) {
@@ -6,21 +7,27 @@ class CopyFilePlugin {
   }
 
   apply(compiler) {
-    compiler.hooks.emit.tapAsync('CopyFilePlugin', (compilation, callback) => {
+    compiler.hooks.emit.tap('CopyFilePlugin', (compilation, callback) => {
+      // console.log(compilation, 'compilation');
       this.copy();
-      callback();
+      // callback();
     });
   }
 
   copy() {
-    fs.readdir('./types', (err, files) => {
+    const sourceDir = path.join(__dirname, '/../types');
+
+    fs.readdir(sourceDir, async (err, files) => {
       if (err) throw new Error(err);
 
-      files.forEach((file) => {
-        fs.copy(`./types/${file}`, './lib/index.d.ts')
-          .then(() => console.log('success!'))
-          .catch((err) => console.error(err));
-      });
+      for (const file of files) {
+        const disrDir = path.join(__dirname + `/../lib/${file}`);
+        try {
+          await fs.copy(`${sourceDir}/${file}`, disrDir);
+        } catch (error) {
+          console.log(error);
+        }
+      }
     });
   }
 }
