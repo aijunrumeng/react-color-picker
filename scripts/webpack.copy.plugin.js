@@ -29,7 +29,7 @@ class CopyFilePlugin {
 
         try {
           await fs.appendFile(distFile, content);
-          fs.move(`${distDir}/Picker.d.ts`, `${distDir}/index.d.ts`);
+          fs.move(distFile, `${distDir}/index.d.ts`);
         } catch (error) {
           console.log(error);
         }
