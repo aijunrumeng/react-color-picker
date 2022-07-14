@@ -1,6 +1,6 @@
 {
   "name": "react-mobile-circle-color-picker",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "mobile color picker",
   "homepage": "https://github.com/aijunrumeng/react-color-picker",
   "keywords": [
@@ -14,8 +14,7 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [
-    "lib/index.js",
-    "lib/index.d.ts"
+    "lib"
   ],
   "sideEffects": [
     "*.less",
