@@ -208,18 +208,18 @@ export default function Picker(props: CustomProps) {
 
   return (
     <>
-      <div className='drap-wrap'>
-        <canvas id='picker' width={outerW} height={outerH}></canvas>
-        <div className='handle-wrap'>
+      <div className="drap-wrap">
+        <canvas id="picker" width={outerW} height={outerH}></canvas>
+        <div className="handle-wrap">
           <div
-            className='handler'
+            className="handler"
             style={{ left, top }}
             onTouchMove={handleTouchMove}
             onTouchEnd={() => {
               onTouchEnd?.(rgbArr);
             }}
           ></div>
-          <div className='dot'></div>
+          <div className="dot"></div>
         </div>
       </div>
     </>
