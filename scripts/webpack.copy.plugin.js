@@ -8,7 +8,6 @@ class CopyFilePlugin {
 
   apply(compiler) {
     compiler.hooks.emit.tapAsync('CopyFilePlugin', (compilation, callback) => {
-      // console.log(compilation, 'compilation');
       this.copy();
       callback();
     });
@@ -24,7 +23,6 @@ class CopyFilePlugin {
       const distFile = `${distDir}/Picker.d.ts`;
 
       for (const file of files) {
-        console.log(file, 'file');
         if (!file.includes('.d.ts')) return;
 
         const content = await fs.readFile(`${sourceDir}/${file}`, 'utf8');
