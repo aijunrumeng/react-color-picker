@@ -1,6 +1,6 @@
 type RGB = [number, number, number];
 
-type CustomProps = {
+type PickerProps = {
   initColor?: string;
   onTouchMove?: (color: number[]) => void;
   onTouchEnd?: (color: number[]) => void;

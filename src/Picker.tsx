@@ -18,7 +18,7 @@ let outerRadius = 0; //圆半径
 let canvas: HTMLCanvasElement;
 let ctx: CanvasRenderingContext2D;
 
-export default function Picker(props: CustomProps) {
+export default function Picker(props: PickerProps) {
   const [left, setLeft] = useState<string | number>(0);
   const [top, setTop] = useState<string | number>(0);
   const [rgbArr, setRgbArr] = useState<RGB>([1, 1, 1]);
